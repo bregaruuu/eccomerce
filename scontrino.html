@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scontrino</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .scontrino {
+      background-color: white;
+      border: 20px solid #333;
+      border-radius: 10px;
+      padding: 30px;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .scontrino h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .riga-prodotto {
+      margin-bottom: 10px;
+    }
+
+    .totale {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="scontrino" id="contenuto-scontrino">
+    <h2>Scontrino Acquisto</h2>
+    <!-- I prodotti verranno aggiunti con JS -->
+  </div>
+
+  <script>
+    // Recupera il carrello dal localStorage
+    const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+    const contenitore = document.getElementById('contenuto-scontrino');
+
+    let totale = 0;
+
+    if (carrello.length === 0) {
+      contenitore.innerHTML += "<p>Il carrello è vuoto.</p>";
+    } else {
+      carrello.forEach(prodotto => {
+        const riga = document.createElement('div');
+        riga.className = 'riga-prodotto';
+        riga.textContent = `${prodotto.marca} ${prodotto.modello} - €${prodotto.prezzo}`;
+        contenitore.appendChild(riga);
+        totale += parseFloat(prodotto.prezzo);
+      });
+
+      const rigaTotale = document.createElement('div');
+      rigaTotale.className = 'totale';
+      rigaTotale.textContent = `Totale: €${totale.toFixed(2)}`;
+      contenitore.appendChild(rigaTotale);
+    }
+
+    // Svuota il carrello dopo l'acquisto (opzionale)
+    // localStorage.removeItem('carrello');
+  </script>
+</body>
+</html>

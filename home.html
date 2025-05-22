@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catalogo Prodotti</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f8f8;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 10px 20px;
+      color: white;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .scheda {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .scheda img {
+      width: 30%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    .scheda:hover {
+      transform: scale(1.02);
+    }
+
+    .scheda button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .scheda button:hover {
+      background-color: #218838;
+    }
+
+    .scheda .btn-dettagli {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .scheda .btn-dettagli:hover {
+      background-color: #0056b3;
+    }
+
+    .carrello {
+      margin-top: 20px;
+    }
+
+    .carrello button {
+      background-color: #dc3545;
+      padding: 10px 15px;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .carrello button:hover {
+      background-color: #c82333;
+    }
+     #bottone-scontrino {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+ }
+
+ #bottone-scontrino:hover {
+  background-color: #0056b3;
+ }
+
+    
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div><a href="#" onclick="mostraHome()">🏠 Home</a></div>
+    <div><a href="#" onclick="mostraCarrello()">🛒 Carrello (<span id="conteggio-carrello">0</span>)</a></div>
+  </div>
+
+  <h1 id="titolo">Catalogo Prodotti</h1>
+
+  <div class="container" id="lista-prodotti"></div>
+  <div class="container" id="lista-carrello" style="display: none;"></div>
+
+  <script>
+    // Carica i dati dei prodotti dal file JSON
+    fetch('prodotti.json')
+      .then(response => response.json())
+      .then(dati => {
+        const listaProdotti = document.getElementById('lista-prodotti');
+        dati.prodotti.forEach(prodotto => {
+          const scheda = document.createElement('div');
+          scheda.className = 'scheda';
+          scheda.innerHTML = `
+            <img src="${prodotto.immagine}" alt="${prodotto.modello}">
+            <h2>${prodotto.marca} - ${prodotto.modello}</h2>
+            <p><strong>Prezzo:</strong> €${prodotto.prezzo}</p>
+            <button onclick='aggiungiAlCarrello(${JSON.stringify(prodotto)})'>Aggiungi al carrello</button>
+            <button class="btn-dettagli" onclick='visualizzaProdotto(${JSON.stringify(prodotto)})'>Visualizza Dettagli</button>
+          `;
+          listaProdotti.appendChild(scheda);
+        });
+      })
+      .catch(error => console.error('Errore nel caricamento dei dati:', error));
+
+    // Salva il carrello nel localStorage
+    function salvaCarrello(carrello) {
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+    }
+
+    // Carica il carrello dal localStorage
+    function caricaCarrello() {
+      return JSON.parse(localStorage.getItem('carrello')) || [];
+    }
+
+    // Aggiorna il contatore del carrello
+    function aggiornaConteggioCarrello() {
+      document.getElementById('conteggio-carrello').textContent = caricaCarrello().length;
+    }
+
+    // Aggiunge un prodotto al carrello
+    function aggiungiAlCarrello(prodotto) {
+      const carrello = caricaCarrello();
+      carrello.push(prodotto);
+      salvaCarrello(carrello);
+      aggiornaConteggioCarrello();
+      alert(`${prodotto.marca} ${prodotto.modello} è stato aggiunto al carrello.`);
+    }
+
+    // Rimuove un prodotto dal carrello
+    function rimuoviDalCarrello(indice) {
+      const carrello = caricaCarrello();
+      carrello.splice(indice, 1);  // Rimuove l'elemento all'indice specificato
+      salvaCarrello(carrello);
+      mostraCarrello(); // Rende visibile il carrello aggiornato
+    }
+
+    // Mostra la pagina Home con i prodotti
+    function mostraHome() {
+      document.getElementById('titolo').textContent = "Catalogo Prodotti";
+      document.getElementById('lista-prodotti').style.display = 'grid';
+      document.getElementById('lista-carrello').style.display = 'none';
+    }
+
+    // Mostra il carrello
+    function mostraCarrello() {
+      const listaCarrello = document.getElementById('lista-carrello');
+      listaCarrello.innerHTML = "";
+      const carrello = caricaCarrello();
+
+      if (carrello.length === 0) {
+        listaCarrello.innerHTML = "<p>Il carrello è vuoto.</p>";
+      } else {
+        carrello.forEach((elemento, index) => {
+          const scheda = document.createElement('div');
+          scheda.className = 'scheda';
+          scheda.innerHTML = `
+            <img src="${elemento.immagine}" alt="${elemento.modello}">
+            <h2>${elemento.marca} - ${elemento.modello}</h2>
+            <p><strong>Prezzo:</strong> €${elemento.prezzo}</p>
+            <button onclick="rimuoviDalCarrello(${index})">Rimuovi</button>
+            <button id="bottone-scontrino" onclick="">Scontrino</button>
+          `;
+          listaCarrello.appendChild(scheda);
+        });
+      }
+
+      // Azzerare il conteggio carrello
+      document.getElementById('conteggio-carrello').textContent = "0";
+
+      document.getElementById('titolo').textContent = "🛒 Il Tuo Carrello";
+      document.getElementById('lista-prodotti').style.display = 'none';
+      document.getElementById('lista-carrello').style.display = 'grid';
+    }
+
+    // Visualizza il prodotto in una nuova pagina
+    function visualizzaProdotto(prodotto) {
+      localStorage.setItem('prodottoVisibile', JSON.stringify(prodotto)); // Salva il prodotto selezionato
+      window.location.href = "dettagli_prodotto.html"; // Reindirizza alla pagina di dettagli prodotto
+    }
+
+    // Inizializza
+    aggiornaConteggioCarrello();
+
+    const bottoneScontrino = document.createElement('button');
+ bottoneScontrino.id = 'bottone-scontrino';
+
+ bottoneScontrino.textContent = "Genera Scontrino";
+ bottoneScontrino.onclick = function () {
+  window.location.href = "scontrino.html";
+  document.getElementById('lista-carrello').appendChild(bottoneScontrino);
+
+};
+
+
+
+    //aggiunta box
+    
+  </script>
+</body>
+</html>

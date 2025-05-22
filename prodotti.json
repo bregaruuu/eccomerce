@@ -1,0 +1,25 @@
+{
+  "prodotti": [
+    {
+      "marca": "Samsung",
+      "modello": "Galaxy S23",
+      "descrizione": "Smartphone con display Dynamic AMOLED 2X",
+      "immagine": "download.jpg",
+      "prezzo": 999.99
+    },
+    {
+      "marca": "Apple",
+      "modello": "iPhone 15",
+      "descrizione": "Smartphone con chip A16 Bionic e Dynamic Island",
+      "immagine": "iphone.jpg",
+      "prezzo": 799.99
+    },
+    {
+      "marca": "Xiaomi",
+      "modello": "Redmi Note 13",
+      "descrizione": "Smartphone con schermo AMOLED da 6.67 pollici",
+      "immagine": "Xiaomi.jpg",
+      "prezzo": 299.99
+    }
+  ]
+}
