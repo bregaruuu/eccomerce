@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <style>
+       
+       body {
+           margin: 0;
+           padding: 0;
+           font-size: 14px;
+           font-family: Arial, Helvetica, sans-serif;
+           background-color: #f4f4f9; 
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           height: 100vh; 
+       }
+
+       
+       .box {
+           width: 100%;
+           max-width: 400px;
+           background-color: white;
+           border-radius: 10px;
+           padding: 2rem;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           text-align: center;
+       }
+
+       
+       .box h1 {
+           margin-bottom: 1.5rem;
+           color: #333;
+           font-size: 24px;
+           font-weight: bold;
+       }
+
+    
+       label {
+           font-size: 16px;
+           font-weight: bold;
+           color: #333;
+           display: block;
+           margin-bottom: 0.5rem;
+           text-align: left;
+       }
+
+       /* Input e campo file */
+       input[type="text"], input[type="password"], input[type="file"] {
+           width: 100%;
+           padding: 10px;
+           margin-bottom: 1rem;
+           border-radius: 5px;
+           border: 1px solid #ccc;
+           font-size: 14px;
+           box-sizing: border-box;
+       }
+
+       /* Icona per la visibilità della password */
+       #container-psw {
+           position: relative;
+       }
+       #eye {
+           position: absolute;
+           top: 50%;
+           right: 10px;
+           transform: translateY(-50%);
+           cursor: pointer;
+           color: #888;
+       }
+
+       /* Bottone di accesso */
+       button {
+           background-color: #007bff;
+           color: white;
+           border: none;
+           padding: 10px;
+           width: 100%;
+           font-size: 16px;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+
+       button:hover {
+           background-color: #0056b3;
+       }
+
+       /* Messaggio di errore */
+       #messaggio {
+           color: red;
+           font-weight: bold;
+           margin-top: 1rem;
+       }
+
+    </style>
+</head>
+<body>
+
+    <!--CONTENITORE-->
+    <div class="box">
+        <h1>Accesso utente</h1>
+        <form id="loginForm">
+            <label for="name">Username:</label>
+            <input type="text" id="nome" required>
+
+            <label for="psw">Password:</label>
+            <div id="container-psw">
+                <input type="password" id="password" required>
+                <span id="eye">👁️</i></span>
+            </div>
+
+            <button type="submit" id="accedi">Accedi</button>
+        </form>
+        <p id="messaggio"></p>
+    </div>
+<script defer>
+    window.addEventListener("DOMContentLoaded", () => {
+    console.log("INIZIALIZZATO");
+
+    const iconaOcchio = document.getElementById('eye');
+    const inputPassword = document.getElementById('password');
+
+    // Funzione per mostrare/nascondere la password
+    iconaOcchio.addEventListener('click', () => {
+        const tipo = inputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        inputPassword.setAttribute('type', tipo);
+
+        // Cambia emoji in base al tipo
+        iconaOcchio.textContent = tipo === 'password' ? '👁️' : '🙈';
+    });
+
+    fetch("username.json")
+        .then(risposta => {
+            if (!risposta.ok) {
+                console.error("Errore nel caricamento del file JSON");
+                return;
+            }
+            return risposta.json();
+        })
+        .then(datiJson => {
+            document.getElementById("loginForm").addEventListener("submit", (evento) => {
+                evento.preventDefault(); // blocca il comportamento di default (refresh pagina)
+
+                let nomeUtente = document.getElementById("nome").value;
+                let passwordInserita = document.getElementById("password").value;
+
+                // Cerca utente con credenziali corrette
+                const utenteValido = datiJson.array.find(elemento =>
+                    elemento.utente === nomeUtente && elemento.passwordn === passwordInserita
+                );
+
+                if (utenteValido) {
+                    // Reindirizza a prova.html
+                    window.location.href = "prova.html";
+                } else {
+                    alert("Credenziali errate, riprova!");
+                }
+            });
+        });
+});
+
+</script>
+    
+   
+   
+
+   
+
+</body>
+</html>
