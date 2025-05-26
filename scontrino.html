@@ -1,76 +1,101 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scontrino</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      padding: 40px;
-      text-align: center;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scontrino</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 20px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+      .scontrino {
+        width: 400px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      }
+      .prodotto {
+        border: 3px solid black;
+        font-weight: bold;
+        padding: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+      }
+      hr {
+        border: 2px solid black;
+        margin: 20px 0;
+      }
+      .totale {
+        font-size: 1.4em;
+        font-weight: bold;
+        text-align: right;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .btn-home {
+        display: block;
+        margin: 25px auto 0;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        width: 120px;
+      }
+      .btn-home:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scontrino">
+      <h1>Scontrino</h1>
+      <div id="prodotti-lista">
+      </div>
+      <hr />
+      <div class="totale" id="totale-pagare">
+      </div>
+      <a href="home.html" class="btn-home">Torna Home</a>
+    </div>
 
-    .scontrino {
-      background-color: white;
-      border: 20px solid #333;
-      border-radius: 10px;
-      padding: 30px;
-      display: inline-block;
-      text-align: left;
-    }
+    <script>
+      const prodottiLista = document.getElementById("prodotti-lista");
+      const totalePagare = document.getElementById("totale-pagare");
+      const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
 
-    .scontrino h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+      if (carrello.length === 0) {
+        prodottiLista.innerHTML = "<p>Il carrello è vuoto.</p>";
+        totalePagare.textContent = "";
+      } else {
+        let totale = 0;
+        carrello.forEach((prodotto) => {
+          const divProdotto = document.createElement("div");
+          divProdotto.classList.add("prodotto");
+          divProdotto.innerHTML = `
+          <span>${prodotto.marca} ${prodotto.modello}</span>
+          <span>€${prodotto.prezzo.toFixed(2)}</span>
+        `;
+          prodottiLista.appendChild(divProdotto);
+          totale += prodotto.prezzo;
+        });
 
-    .riga-prodotto {
-      margin-bottom: 10px;
-    }
-
-    .totale {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="scontrino" id="contenuto-scontrino">
-    <h2>Scontrino Acquisto</h2>
-    <!-- I prodotti verranno aggiunti con JS -->
-  </div>
-
-  <script>
-    // Recupera il carrello dal localStorage
-    const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-    const contenitore = document.getElementById('contenuto-scontrino');
-
-    let totale = 0;
-
-    if (carrello.length === 0) {
-      contenitore.innerHTML += "<p>Il carrello è vuoto.</p>";
-    } else {
-      carrello.forEach(prodotto => {
-        const riga = document.createElement('div');
-        riga.className = 'riga-prodotto';
-        riga.textContent = `${prodotto.marca} ${prodotto.modello} - €${prodotto.prezzo}`;
-        contenitore.appendChild(riga);
-        totale += parseFloat(prodotto.prezzo);
-      });
-
-      const rigaTotale = document.createElement('div');
-      rigaTotale.className = 'totale';
-      rigaTotale.textContent = `Totale: €${totale.toFixed(2)}`;
-      contenitore.appendChild(rigaTotale);
-    }
-
-    // Svuota il carrello dopo l'acquisto (opzionale)
-    // localStorage.removeItem('carrello');
-  </script>
-</body>
+        totalePagare.textContent = `Totale da pagare: €${totale.toFixed(2)}`;
+      }
+    </script>
+  </body>
 </html>
