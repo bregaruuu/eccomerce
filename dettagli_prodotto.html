@@ -11,7 +11,6 @@
         background-color: #f8f8f8;
         padding: 0;
       }
-
       .navbar {
         display: flex;
         justify-content: space-between;
@@ -20,23 +19,19 @@
         padding: 10px 20px;
         color: white;
       }
-
       .navbar a {
         color: white;
         text-decoration: none;
         margin: 0 10px;
       }
-
       .navbar span {
         margin-left: 10px;
       }
-
       .container {
         display: flex;
         justify-content: center;
         margin-top: 20px;
       }
-
       .scheda {
         background-color: white;
         border-radius: 8px;
@@ -45,23 +40,19 @@
         text-align: center;
         width: 60%;
       }
-
       .scheda img {
         width: 50%;
         height: auto;
         border-radius: 6px;
         margin-bottom: 15px;
       }
-
       .scheda h2 {
         margin: 10px 0;
       }
-
       .scheda p {
         font-size: 18px;
         margin: 5px 0;
       }
-
       .scheda button {
         padding: 10px 20px;
         background-color: #28a745;
@@ -71,11 +62,9 @@
         cursor: pointer;
         margin-top: 20px;
       }
-
       .scheda button:hover {
         background-color: #218838;
       }
-
       .back-btn {
         margin-top: 20px;
         padding: 8px 16px;
@@ -85,7 +74,6 @@
         border-radius: 4px;
         cursor: pointer;
       }
-
       .back-btn:hover {
         background-color: #0056b3;
       }
@@ -98,17 +86,13 @@
         <a href="#" onclick="window.history.back()">🔙 Indietro</a>
       </div>
     </div>
-
     <h1>Dettagli Prodotto</h1>
-
     <div class="container">
       <div class="scheda" id="dettagli-prodotto">
       </div>
-    </div>
-
+    </div
     <script>
       const prodotto = JSON.parse(localStorage.getItem("prodottoVisibile"));
-
       if (prodotto) {
         const schedaProdotto = document.getElementById("dettagli-prodotto");
         schedaProdotto.innerHTML = `
@@ -124,7 +108,6 @@
         document.getElementById("dettagli-prodotto").innerHTML =
           "<p>Prodotto non trovato.</p>";
       }
-
       function aggiungiAlCarrello(prodotto) {
         const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
         carrello.push(prodotto);
@@ -134,7 +117,6 @@
         );
         aggiornaConteggioCarrello();
       }
-
       function aggiornaConteggioCarrello() {
         const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
         const spanConteggio = document.getElementById("conteggio-carrello");
@@ -142,7 +124,6 @@
           spanConteggio.textContent = carrello.length;
         }
       }
-
       aggiornaConteggioCarrello();
     </script>
   </body>
