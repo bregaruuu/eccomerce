@@ -1,133 +1,149 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dettagli Prodotto</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f8f8f8;
-      padding: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dettagli Prodotto</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f8f8f8;
+        padding: 0;
+      }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #333;
-      padding: 10px 20px;
-      color: white;
-    }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: green;
+        padding: 10px 20px;
+        color: white;
+      }
 
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-    }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+      }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
+      .navbar span {
+        margin-left: 10px;
+      }
 
-    .scheda {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 60%;
-    }
+      .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
 
-    .scheda img {
-      width: 50%;
-      height: auto;
-      border-radius: 6px;
-      margin-bottom: 15px;
-    }
+      .scheda {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 60%;
+      }
 
-    .scheda h2 {
-      margin: 10px 0;
-    }
+      .scheda img {
+        width: 50%;
+        height: auto;
+        border-radius: 6px;
+        margin-bottom: 15px;
+      }
 
-    .scheda p {
-      font-size: 18px;
-      margin: 5px 0;
-    }
+      .scheda h2 {
+        margin: 10px 0;
+      }
 
-    .scheda button {
-      padding: 10px 20px;
-      background-color: #28a745;
-      border: none;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+      .scheda p {
+        font-size: 18px;
+        margin: 5px 0;
+      }
 
-    .scheda button:hover {
-      background-color: #218838;
-    }
+      .scheda button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
 
-    .back-btn {
-      margin-top: 20px;
-      padding: 8px 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+      .scheda button:hover {
+        background-color: #218838;
+      }
 
-    .back-btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
+      .back-btn {
+        margin-top: 20px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
 
-  <div class="navbar">
-    <div><a href="home.html">🏠 Home</a></div>
-    <div><a href="#" onclick="window.history.back()">🔙 Indietro</a></div>
-  </div>
-
-  <h1>Dettagli Prodotto</h1>
-
-  <div class="container">
-    <div class="scheda" id="dettagli-prodotto">
-      <!-- Dettagli prodotto saranno inseriti dinamicamente -->
+      .back-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div><a href="home.html">🏠 Home</a></div>
+      <div>
+        <a href="#" onclick="window.history.back()">🔙 Indietro</a>
+      </div>
     </div>
-  </div>
 
-  <script>
-    // Recupera il prodotto dal localStorage
-    const prodotto = JSON.parse(localStorage.getItem('prodottoVisibile'));
+    <h1>Dettagli Prodotto</h1>
 
-    if (prodotto) {
-      // Mostra i dettagli del prodotto
-      const schedaProdotto = document.getElementById('dettagli-prodotto');
-      schedaProdotto.innerHTML = `
-        <img src="${prodotto.immagine}" alt="${prodotto.modello}">
-        <h2>${prodotto.marca} - ${prodotto.modello}</h2>
-        <p><strong>Descrizione:</strong> ${prodotto.descrizione}</p>
-        <p><strong>Prezzo:</strong> €${prodotto.prezzo}</p>
-        <button onclick="aggiungiAlCarrello(${JSON.stringify(prodotto)})">Aggiungi al carrello</button>
-      `;
-    } else {
-      // Se il prodotto non è presente nel localStorage, mostra un messaggio di errore
-      document.getElementById('dettagli-prodotto').innerHTML = '<p>Prodotto non trovato.</p>';
-    }
+    <div class="container">
+      <div class="scheda" id="dettagli-prodotto">
+      </div>
+    </div>
 
-    // Funzione per aggiungere il prodotto al carrello
-    function aggiungiAlCarrello(prodotto) {
-      const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-      carrello.push(prodotto);
-      localStorage.setItem('carrello', JSON.stringify(carrello));
-      alert(`${prodotto.marca} ${prodotto.modello} è stato aggiunto al carrello.`);
-    }
-  </script>
-</body>
+    <script>
+      const prodotto = JSON.parse(localStorage.getItem("prodottoVisibile"));
+
+      if (prodotto) {
+        const schedaProdotto = document.getElementById("dettagli-prodotto");
+        schedaProdotto.innerHTML = `
+          <img src="${prodotto.immagine}" alt="${prodotto.modello}">
+          <h2>${prodotto.marca} - ${prodotto.modello}</h2>
+          <p><strong>Descrizione:</strong> ${prodotto.descrizione}</p>
+          <p><strong>Prezzo:</strong> €${prodotto.prezzo}</p>
+          <button onclick='aggiungiAlCarrello(${JSON.stringify(
+            prodotto
+          )})'>Aggiungi al carrello</button>
+        `;
+      } else {
+        document.getElementById("dettagli-prodotto").innerHTML =
+          "<p>Prodotto non trovato.</p>";
+      }
+
+      function aggiungiAlCarrello(prodotto) {
+        const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+        carrello.push(prodotto);
+        localStorage.setItem("carrello", JSON.stringify(carrello));
+        alert(
+          `${prodotto.marca} ${prodotto.modello} è stato aggiunto al carrello.`
+        );
+        aggiornaConteggioCarrello();
+      }
+
+      function aggiornaConteggioCarrello() {
+        const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+        const spanConteggio = document.getElementById("conteggio-carrello");
+        if (spanConteggio) {
+          spanConteggio.textContent = carrello.length;
+        }
+      }
+
+      aggiornaConteggioCarrello();
+    </script>
+  </body>
 </html>
