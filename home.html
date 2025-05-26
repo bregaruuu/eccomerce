@@ -10,34 +10,29 @@
         margin: 0;
         background-color: #f8f8f8;
       }
-
       .navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #333;
+        background-color: green;
         padding: 10px 20px;
         color: white;
       }
-
       .navbar a {
         color: white;
         text-decoration: none;
         margin: 0 10px;
       }
-
       h1 {
         text-align: center;
         margin: 20px 0;
       }
-
       .container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
         padding: 20px;
       }
-
       .scheda {
         background-color: white;
         border-radius: 8px;
@@ -46,17 +41,14 @@
         text-align: center;
         transition: transform 0.2s;
       }
-
       .scheda img {
         width: 30%;
         height: auto;
         border-radius: 6px;
       }
-
       .scheda:hover {
         transform: scale(1.02);
       }
-
       .scheda button {
         margin-top: 10px;
         padding: 8px 15px;
@@ -66,11 +58,9 @@
         border-radius: 4px;
         cursor: pointer;
       }
-
       .scheda button:hover {
         background-color: #218838;
       }
-
       .scheda .btn-dettagli {
         margin-top: 10px;
         padding: 8px 15px;
@@ -80,7 +70,6 @@
         border-radius: 4px;
         cursor: pointer;
       }
-
       .scheda .btn-dettagli:hover {
         background-color: #0056b3;
       }
@@ -88,7 +77,6 @@
       .carrello {
         margin-top: 20px;
       }
-
       .carrello button {
         background-color: #dc3545;
         padding: 10px 15px;
@@ -97,7 +85,6 @@
         border-radius: 4px;
         cursor: pointer;
       }
-
       .carrello button:hover {
         background-color: #c82333;
       }
@@ -111,7 +98,6 @@
         cursor: pointer;
         display: none;
       }
-
       #scont:hover {
         background-color: #0056b3;
       }
@@ -126,25 +112,18 @@
         >
       </div>
     </div>
-
     <h1 id="titolo">Catalogo Prodotti</h1>
-
     <div class="container" id="lista-prodotti"></div>
     <div class="container" id="lista-carrello" style="display: none"></div>
     <button type="button" id="scont">Scontrino</button>
-
     <script>
-      //apertura carrello
       window.addEventListener("DOMContentLoaded", () => {
-        //controllo item
         if (localStorage.getItem("aperturaProdotto") == true) {
           localStorage.setItem("aperturaProdotto", false);
           mostraCarrello();
         }
         return;
       });
-
-      // Carica i dati dei prodotti dal file JSON
       fetch("prodotti.json")
         .then((response) => response.json())
         .then((dati) => {
@@ -169,24 +148,16 @@
         .catch((error) =>
           console.error("Errore nel caricamento dei dati:", error)
         );
-
-      // Salva il carrello nel localStorage
       function salvaCarrello(carrello) {
         localStorage.setItem("carrello", JSON.stringify(carrello));
       }
-
-      // Carica il carrello dal localStorage
       function caricaCarrello() {
         return JSON.parse(localStorage.getItem("carrello")) || [];
       }
-
-      // Aggiorna il contatore del carrello
       function aggiornaConteggioCarrello() {
         document.getElementById("conteggio-carrello").textContent =
           caricaCarrello().length;
       }
-
-      // Aggiunge un prodotto al carrello
       function aggiungiAlCarrello(prodotto) {
         const carrello = caricaCarrello();
         carrello.push(prodotto);
@@ -196,27 +167,20 @@
           `${prodotto.marca} ${prodotto.modello} è stato aggiunto al carrello.`
         );
       }
-
-      // Rimuove un prodotto dal carrello
       function rimuoviDalCarrello(indice) {
         const carrello = caricaCarrello();
-        carrello.splice(indice, 1); // Rimuove l'elemento all'indice specificato
+        carrello.splice(indice, 1); 
         salvaCarrello(carrello);
-        mostraCarrello(); // Rende visibile il carrello aggiornato
+        mostraCarrello(); 
       }
-
-      // Mostra la pagina Home con i prodotti
       function mostraHome() {
         document.getElementById("scont").style.display = "none";
         document.getElementById("titolo").textContent = "Catalogo Prodotti";
         document.getElementById("lista-prodotti").style.display = "grid";
         document.getElementById("lista-carrello").style.display = "none";
       }
-
-      // Mostra il carrello
       function mostraCarrello() {
         document.getElementById("scont").style.display = "block";
-
         const listaCarrello = document.getElementById("lista-carrello");
         listaCarrello.innerHTML = "";
         const carrello = caricaCarrello();
@@ -232,29 +196,21 @@
             <h2>${elemento.marca} - ${elemento.modello}</h2>
             <p><strong>Prezzo:</strong> €${elemento.prezzo}</p>
             <button onclick="rimuoviDalCarrello(${index})">Rimuovi</button>
-            
           `;
             listaCarrello.appendChild(scheda);
           });
         }
-
-        // Azzerare il conteggio carrello
         document.getElementById("conteggio-carrello").textContent = "0";
-
         document.getElementById("titolo").textContent = "🛒 Il Tuo Carrello";
         document.getElementById("lista-prodotti").style.display = "none";
         document.getElementById("lista-carrello").style.display = "grid";
       }
 
-      // Visualizza il prodotto in una nuova pagina
       function visualizzaProdotto(prodotto) {
-        localStorage.setItem("prodottoVisibile", JSON.stringify(prodotto)); // Salva il prodotto selezionato
-        window.location.href = "dettagli_prodotto.html"; // Reindirizza alla pagina di dettagli prodotto
+        localStorage.setItem("prodottoVisibile", JSON.stringify(prodotto)); 
+        window.location.href = "dettagli_prodotto.html";
       }
-
-      // Inizializza
       aggiornaConteggioCarrello();
-
       const bottoneScontrino = document.createElement("button");
       bottoneScontrino.id = "bottone-scontrino";
 
@@ -266,8 +222,6 @@
       document.getElementById("scont").addEventListener("click", () => {
         window.location.href = "scontrino.html";
       });
-
-      //aggiunta box
     </script>
   </body>
 </html>
